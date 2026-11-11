@@ -93,14 +93,21 @@ PREGUNTA DEL ESTUDIANTE:
 
     config = genai.types.GenerationConfig(temperature=0.1, max_output_tokens=400)
     
-    # Streaming de respuesta para UX fluida
-    respuesta_stream = llm_model.generate_content(
+    # 1. Solicitud con transmisión en vivo a Gemini
+    respuesta_raw = llm_model.generate_content(
         prompt_sistema,
         generation_config=config,
         stream=True,
         request_options={"timeout": 15.0}
     )
-    return respuesta_stream
+    
+    # 2. Generador que filtra y entrega SOLO el texto plano a Streamlit
+    def iterar_solo_texto():
+        for chunk in respuesta_raw:
+            if chunk.text:
+                yield chunk.text
+
+    return iterar_solo_texto()
 
 # -----------------------------------------------------------------------------
 # 4. Interfaz de Chat (Historial de Mensajes)
