@@ -38,7 +38,7 @@ def iniciar_clientes():
 
 try:
     co_client, qdrant_client, llm_model = iniciar_clientes()
-    COLLECTION_NAME = "iuas_estudiantes_rag"
+    COLLECTION_NAME = "edu_rag_permanencia"
     EMBED_MODEL = "embed-multilingual-v3.0"
 except Exception as e:
     st.error(f"Error al conectar con los servicios API: {e}")
